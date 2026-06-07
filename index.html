@@ -139,7 +139,7 @@
   .galeria figure:nth-child(4){--r:-1.5deg;}
   .galeria figure.big{grid-column:span 2;--r:0deg;}
   .galeria img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1;}
-  .galeria figure.big img{aspect-ratio:16/11;}
+  .galeria figure.big img{aspect-ratio:16/11;object-position:center top;}
   .galeria figure:active{transform:scale(1.03) rotate(0);}
   .galeria figcaption{
     position:absolute;left:0;right:0;bottom:0;padding:18px 12px 9px;
@@ -314,7 +314,7 @@ function celebrar(){
 }
 
 /* ---------- Música: "Cumpleaños feliz" con Web Audio (sin archivos) ---------- */
-let audioCtx=null, musicTimer=null, musicOn=false;
+let audioCtx=null, musicTimer=null, musicOn=false, activeNodes=[];
 const NOTES={G3:196,A3:220,B3:246.94,C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,F3:174.61};
 // melodía de cumpleaños (nota, duración en beats)
 const MELODY=[
@@ -324,6 +324,7 @@ const MELODY=[
  ['F4',.5],['F4',.5],['E4',1],['C4',1],['D4',1],['C4',2]
 ];
 function playMelody(){
+  activeNodes=[];                       // empezamos limpio: solo las notas de ESTA pasada
   const beat=.42; let t=audioCtx.currentTime+.1;
   MELODY.forEach(([n,d])=>{
     const o=audioCtx.createOscillator(), g=audioCtx.createGain();
@@ -333,18 +334,31 @@ function playMelody(){
     g.gain.exponentialRampToValueAtTime(.001,t+d*beat*.95);
     o.connect(g).connect(audioCtx.destination);
     o.start(t); o.stop(t+d*beat);
+    activeNodes.push({o,g});            // guardamos referencia para poder cortarlas
     t+=d*beat;
   });
   const total=(t-audioCtx.currentTime)*1000;
   musicTimer=setTimeout(()=>{ if(musicOn) playMelody(); }, total+400);
 }
 function startMusic(){
+  if(musicOn) return;                   // evita iniciar dos veces (no se superpone)
   if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
   if(audioCtx.state==='suspended') audioCtx.resume();
   musicOn=true; document.getElementById('music-btn').textContent='🎵';
   playMelody();
 }
-function stopMusic(){ musicOn=false; clearTimeout(musicTimer); document.getElementById('music-btn').textContent='🔇'; }
+function stopMusic(){
+  musicOn=false; clearTimeout(musicTimer);
+  // corta de verdad las notas ya programadas/sonando
+  activeNodes.forEach(({o,g})=>{
+    try{ g.gain.cancelScheduledValues(audioCtx.currentTime); }catch(e){}
+    try{ g.gain.setValueAtTime(0,audioCtx.currentTime); }catch(e){}
+    try{ o.stop(); }catch(e){}
+    try{ o.disconnect(); }catch(e){}
+  });
+  activeNodes=[];
+  document.getElementById('music-btn').textContent='🔇';
+}
 document.getElementById('music-btn').addEventListener('click',()=> musicOn?stopMusic():startMusic());
 
 /* ---------- Abrir la sorpresa ---------- */
