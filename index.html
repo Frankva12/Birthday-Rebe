@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Para ti 🐾</title>
+<meta name="description" content="Un pequeño secreto que Yogui quiere contarte..." />
+
+<!-- Open Graph: lo que se ve al compartir el link (mantiene la sorpresa) -->
+<meta property="og:title" content="Yogui tiene un secreto para ti... 🐾" />
+<meta property="og:description" content="Toca para descubrir lo que te está guardando." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="img/yogui-sillon.jpg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+
+<style>
+  :root{
+    --amarillo:#FFC83D;
+    --amarillo-vivo:#FFB300;
+    --amarillo-suave:#FFF0BE;
+    --crema:#FFFBEF;
+    --rosa:#FF9DBA;
+    --rosa-suave:#FFD7E4;
+    --texto:#6B5535;
+    --texto-suave:#9A815B;
+    --blanco:#fffdf8;
+    --sombra:0 18px 50px rgba(255,160,40,.22);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:'Poppins',sans-serif;
+    color:var(--texto);
+    background:
+      radial-gradient(circle at 15% 10%, #FFF7D6 0%, transparent 45%),
+      radial-gradient(circle at 85% 0%, #FFE1EC 0%, transparent 40%),
+      linear-gradient(160deg,#FFF9E8 0%,#FFF3D0 40%,#FFEAB8 100%);
+    overflow-x:hidden;
+  }
+  .scriptfont{font-family:'Pacifico',cursive;font-weight:400;}
+  .hand{font-family:'Caveat',cursive;}
+
+  /* ======================= PANTALLA SORPRESA (GATE) ======================= */
+  #gate{
+    position:fixed;inset:0;z-index:60;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:28px;
+    background:
+      radial-gradient(circle at 50% 35%, #FFF6CF 0%, #FFE9AE 55%, #FFD879 100%);
+    transition:opacity .9s ease, transform .9s ease, visibility .9s;
+  }
+  #gate.hidden{opacity:0;visibility:hidden;transform:scale(1.15);pointer-events:none;}
+
+  .gate-eyebrow{
+    font-size:.78rem;letter-spacing:3px;text-transform:uppercase;
+    color:var(--texto-suave);margin-bottom:18px;animation:fadeUp .8s both;
+  }
+  .gate-secret{
+    font-size:clamp(1.6rem,6vw,2.6rem);line-height:1.3;color:var(--texto);
+    max-width:520px;margin-bottom:8px;animation:fadeUp .8s .1s both;
+  }
+  .gate-sub{
+    color:var(--texto-suave);font-size:1rem;max-width:340px;margin:14px auto 34px;
+    animation:fadeUp .8s .2s both;
+  }
+
+  /* gato "guardián" del secreto */
+  .gate-cat{
+    width:min(220px,58vw);border-radius:50%;object-fit:cover;aspect-ratio:1;
+    border:7px solid #fff;box-shadow:var(--sombra);
+    animation:fadeUp .8s .05s both, breathe 3.2s ease-in-out infinite;
+    margin-bottom:26px;
+  }
+  .zzz{position:absolute;font-size:1.4rem;opacity:.55;animation:floatZ 3s ease-in-out infinite;}
+
+  .open-btn{
+    position:relative;border:none;cursor:pointer;
+    font-family:'Poppins',sans-serif;font-weight:600;font-size:1.05rem;
+    color:#7a5a10;padding:17px 40px;border-radius:50px;
+    background:linear-gradient(180deg,#FFE99A,#FFC83D);
+    box-shadow:0 10px 24px rgba(255,170,40,.45), inset 0 2px 0 rgba(255,255,255,.6);
+    animation:fadeUp .8s .3s both, pulse 2s ease-in-out infinite;
+    transition:transform .15s ease;
+  }
+  .open-btn:active{transform:scale(.95);}
+  .open-btn .paw{margin-left:6px;}
+  .gate-hint{margin-top:18px;font-size:.8rem;color:var(--texto-suave);opacity:.8;
+    animation:fadeUp .8s .5s both;}
+
+  /* ======================= CELEBRACIÓN ======================= */
+  #fiesta{position:relative;z-index:1;}
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px;}
+
+  /* HERO */
+  .hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:80px 22px 40px;}
+  .hero .hb{font-size:.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--rosa);font-weight:600;margin-bottom:10px;}
+  .hero h1{
+    font-family:'Pacifico',cursive;font-weight:400;line-height:1.05;
+    font-size:clamp(2.6rem,11vw,5rem);
+    background:linear-gradient(180deg,#FFB300,#FF8FAE);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 6px 14px rgba(255,150,40,.25));
+    margin-bottom:6px;
+  }
+  .hero .nombre{
+    font-family:'Pacifico',cursive;font-size:clamp(3rem,15vw,7rem);line-height:1;
+    color:var(--amarillo-vivo);
+    text-shadow:0 4px 0 #fff,0 10px 26px rgba(255,160,40,.35);
+    margin:2px 0 18px;
+  }
+  .hero .edad{font-size:1.15rem;color:var(--texto);font-weight:500;}
+  .hero .edad b{color:var(--rosa);}
+  .scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:.8rem;color:var(--texto-suave);animation:bob 1.8s ease-in-out infinite;}
+
+  /* tarjetas / secciones */
+  section.card{
+    background:var(--blanco);border-radius:32px;padding:38px 26px;
+    margin:26px auto;box-shadow:var(--sombra);position:relative;overflow:hidden;
+  }
+  section.card::before{content:"";position:absolute;inset:0;border-radius:32px;padding:2px;
+    background:linear-gradient(135deg,#FFD86B,#FFB6CB);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:.6;pointer-events:none;}
+  .card h2{font-family:'Caveat',cursive;font-size:clamp(1.9rem,7vw,2.6rem);color:var(--amarillo-vivo);text-align:center;margin-bottom:6px;}
+  .card h2 .em{font-family:'Poppins';font-size:1.4rem;}
+  .card .lead{text-align:center;color:var(--texto-suave);margin-bottom:22px;font-size:.95rem;}
+
+  /* GALERÍA YOGUI */
+  .galeria{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  .galeria figure{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 8px 20px rgba(255,160,40,.18);transform:rotate(var(--r,0deg));transition:transform .35s ease;}
+  .galeria figure:nth-child(1){--r:-2deg;}
+  .galeria figure:nth-child(2){--r:2deg;}
+  .galeria figure:nth-child(3){--r:1.5deg;}
+  .galeria figure:nth-child(4){--r:-1.5deg;}
+  .galeria figure.big{grid-column:span 2;--r:0deg;}
+  .galeria img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1;}
+  .galeria figure.big img{aspect-ratio:16/11;}
+  .galeria figure:active{transform:scale(1.03) rotate(0);}
+  .galeria figcaption{
+    position:absolute;left:0;right:0;bottom:0;padding:18px 12px 9px;
+    font-family:'Caveat',cursive;font-size:1.15rem;color:#fff;
+    background:linear-gradient(0deg,rgba(0,0,0,.45),transparent);
+  }
+
+  /* PASTEL */
+  .cake-stage{display:flex;flex-direction:column;align-items:center;}
+  .cake{position:relative;width:180px;height:150px;margin:6px auto 6px;cursor:pointer;}
+  .cake .candle{position:absolute;top:-2px;left:50%;width:8px;height:34px;border-radius:4px;
+    background:repeating-linear-gradient(45deg,#FF9DBA 0 6px,#fff 6px 12px);transform:translateX(-50%);}
+  .cake .candle::before{content:"";position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:#6B5535;}
+  .flame{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:14px;height:20px;
+    background:radial-gradient(circle at 50% 70%,#fff 0%,#FFD93D 35%,#FF8A00 75%,transparent 78%);
+    border-radius:50% 50% 50% 50%/60% 60% 40% 40%;filter:blur(.3px);
+    animation:flicker .12s infinite alternate;transition:opacity .3s;}
+  .flame.out{opacity:0;}
+  .layer{position:absolute;left:50%;transform:translateX(-50%);border-radius:16px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.06);}
+  .layer.top{bottom:74px;width:120px;height:42px;background:linear-gradient(#FFE39A,#FFC83D);}
+  .layer.bottom{bottom:30px;width:170px;height:52px;background:linear-gradient(#FFD0E0,#FF9DBA);}
+  .plate{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:200px;height:16px;border-radius:50%;background:#fff;box-shadow:0 10px 18px rgba(255,160,40,.25);}
+  .drip{position:absolute;top:-6px;width:14px;height:18px;background:#FFF;border-radius:0 0 8px 8px;}
+  .cake-btn{margin-top:10px;border:none;cursor:pointer;font-family:'Poppins';font-weight:600;
+    background:linear-gradient(180deg,#FFD7E4,#FF9DBA);color:#fff;padding:13px 28px;border-radius:50px;
+    box-shadow:0 8px 18px rgba(255,140,170,.45);transition:transform .15s;}
+  .cake-btn:active{transform:scale(.95);}
+  .wish{margin-top:16px;text-align:center;font-family:'Caveat',cursive;font-size:1.5rem;color:var(--rosa);min-height:1.6em;opacity:0;transition:opacity .6s;}
+  .wish.show{opacity:1;}
+
+  /* MENSAJE */
+  .mensaje p{font-size:1.04rem;line-height:1.85;color:var(--texto);margin-bottom:16px;}
+  .mensaje .firma{font-family:'Caveat',cursive;font-size:1.7rem;color:var(--amarillo-vivo);text-align:right;margin-top:8px;}
+  .mensaje .destacado{font-family:'Caveat',cursive;font-size:1.4rem;color:var(--rosa);text-align:center;display:block;margin:22px 0;}
+
+  /* FOOTER */
+  footer{text-align:center;padding:40px 22px 70px;color:var(--texto-suave);font-size:.9rem;}
+  footer .paws{font-size:1.3rem;letter-spacing:8px;margin-bottom:10px;opacity:.7;}
+
+  /* botón música */
+  #music-btn{position:fixed;top:14px;right:14px;z-index:70;width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+    background:rgba(255,255,255,.85);box-shadow:0 6px 16px rgba(255,160,40,.3);font-size:1.2rem;backdrop-filter:blur(6px);transition:transform .2s;}
+  #music-btn:active{transform:scale(.9);}
+
+  /* decoraciones flotantes */
+  .floaty{position:fixed;bottom:-60px;font-size:1.6rem;pointer-events:none;z-index:0;opacity:.85;animation:rise linear infinite;}
+
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ======================= ANIMACIONES ======================= */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+  @keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+  @keyframes pulse{0%,100%{box-shadow:0 10px 24px rgba(255,170,40,.45),inset 0 2px 0 rgba(255,255,255,.6);}50%{box-shadow:0 10px 34px rgba(255,170,40,.7),inset 0 2px 0 rgba(255,255,255,.6);}}
+  @keyframes floatZ{0%{transform:translateY(0);opacity:.6;}100%{transform:translateY(-26px);opacity:0;}}
+  @keyframes bob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,8px);}}
+  @keyframes flicker{from{transform:translateX(-50%) scale(1) rotate(-2deg);}to{transform:translateX(-50%) scale(1.12) rotate(2deg);}}
+  @keyframes rise{from{transform:translateY(0) rotate(0);}to{transform:translateY(-115vh) rotate(220deg);}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;}}
+</style>
+</head>
+<body>
+
+<!-- ===== Botón de música ===== -->
+<button id="music-btn" aria-label="Música" title="Música">🔇</button>
+
+<!-- ===== PANTALLA SORPRESA ===== -->
+<div id="gate">
+  <div class="gate-eyebrow">shhh… es un secreto</div>
+  <div style="position:relative;">
+    <span class="zzz" style="top:-6px;right:6px;">z</span>
+    <span class="zzz" style="top:-18px;right:-8px;animation-delay:.6s;">z</span>
+    <img class="gate-cat" src="img/yogui-sillon.jpg" alt="Yogui" />
+  </div>
+  <h2 class="gate-secret scriptfont">Yogui ha estado guardando<br>algo para ti…</h2>
+  <p class="gate-sub">Lleva días sin contárselo a nadie. Solo quería que <b>tú</b> fueras la primera en verlo.</p>
+  <button class="open-btn" id="openBtn">Descúbrelo <span class="paw">🐾</span></button>
+  <div class="gate-hint">(sube el volumen 🔈)</div>
+</div>
+
+<!-- ===== CELEBRACIÓN ===== -->
+<main id="fiesta">
+
+  <section class="hero">
+    <div class="hb">y el secreto era…</div>
+    <h1>¡Feliz Cumpleaños!</h1>
+    <div class="nombre" id="nombreHero">Amiga</div>
+    <p class="edad">Hoy cumples <b id="edadHero">25</b> vueltas al sol ☀️ — y el mundo es más bonito desde que estás en él.</p>
+    <div class="scroll-cue">desliza hacia abajo ↓</div>
+  </section>
+
+  <div class="wrap">
+
+    <section class="card reveal">
+      <h2>Alguien quería saludarte <span class="em">🐱</span></h2>
+      <p class="lead">Sí… Yogui también está en la sorpresa. Aquí va su sesión de fotos oficial:</p>
+      <div class="galeria">
+        <figure class="big"><img src="img/yogui-jardin.jpg" alt="Yogui en el jardín"><figcaption>“te traje una flor amarilla 🌼”</figcaption></figure>
+        <figure><img src="img/yogui-bebe1.jpg" alt="Yogui bebé"><figcaption>el día que llegó 🍼</figcaption></figure>
+        <figure><img src="img/yogui-bebe2.jpg" alt="Yogui bebé ojos azules"><figcaption>ojitos de bebé 👀</figcaption></figure>
+        <figure class="big"><img src="img/yogui-amiga.jpg" alt="Yogui y su humana"><figcaption>tu personita favorita y tú 🧡</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="card reveal">
+      <h2>Pide un deseo <span class="em">🎂</span></h2>
+      <p class="lead">Toca el pastel o el botón para soplar las velitas. Cierra los ojos primero…</p>
+      <div class="cake-stage">
+        <div class="cake" id="cake">
+          <div class="layer top">
+            <span class="drip" style="left:14px;"></span>
+            <span class="drip" style="left:52px;"></span>
+            <span class="drip" style="left:90px;"></span>
+          </div>
+          <div class="layer bottom"></div>
+          <div class="plate"></div>
+          <div class="candle"><div class="flame" id="flame"></div></div>
+        </div>
+        <button class="cake-btn" id="blowBtn">Soplar las velitas 💨</button>
+        <div class="wish" id="wishText"></div>
+      </div>
+    </section>
+
+    <section class="card mensaje reveal">
+      <h2>Una carta para ti <span class="em">💌</span></h2>
+      <p>Hay personas que se cruzan en tu vida y, sin avisar, se vuelven tu lugar seguro. Tú eres eso para mí.</p>
+      <p>Te admiro un montón: estudiando <b>psicología</b> aprendes a entender a la gente, y <b>reclutando</b> te dedicas a encontrar lo mejor en cada persona. Pero lo curioso es que no necesitas ningún título para eso — siempre has sabido ver lo bueno en los demás. Yo lo sé porque lo haces conmigo todos los días.</p>
+      <span class="destacado">Tienes el corazón más grande que conozco… casi tan grande como el amor que le tienes a Yogui 🐾</span>
+      <p>Que este nuevo año te traiga calma en los días difíciles, risas hasta que duela la panza, oportunidades que te merezcas y muchas tardes de sol con tu gato encima.</p>
+      <p>Gracias por ser mi mejor amiga. Por aguantarme, por escucharme y por pintar de <b>amarillo</b> hasta los días grises.</p>
+      <span class="firma">Feliz cumple, amiga. Te quiero ✨</span>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="paws">🐾 🐾 🐾</div>
+    Hecho con mucho cariño (y un poco de ayuda de Yogui)<br>
+    para la mejor de todas 🧡
+  </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script>
+/* =================== CONFIGURACIÓN (edita aquí) =================== */
+const CONFIG = {
+  nombre: "Amiga",     // <-- pon aquí el nombre de tu amiga
+  edad: 25,
+};
+/* ================================================================= */
+
+document.getElementById('nombreHero').textContent = CONFIG.nombre;
+document.getElementById('edadHero').textContent = CONFIG.edad;
+document.title = "Para " + CONFIG.nombre + " 🐾";
+
+/* ---------- Confeti amarillo/rosa ---------- */
+const COLORS = ['#FFC83D','#FFB300','#FF9DBA','#FFE39A','#FFD7E4','#ffffff'];
+function boom(opts={}){
+  if(typeof confetti!=='function') return;
+  confetti(Object.assign({particleCount:120,spread:80,origin:{y:.6},colors:COLORS,scalar:1.1},opts));
+}
+function celebrar(){
+  boom({particleCount:160,spread:100,startVelocity:55});
+  setTimeout(()=>boom({particleCount:90,angle:60,spread:70,origin:{x:0}}),200);
+  setTimeout(()=>boom({particleCount:90,angle:120,spread:70,origin:{x:1}}),350);
+  // lluvia continua corta
+  const end=Date.now()+1500;
+  (function frame(){
+    confetti({particleCount:3,startVelocity:0,ticks:200,gravity:.6,origin:{x:Math.random(),y:-.05},colors:COLORS,scalar:1.2,shapes:['circle']});
+    if(Date.now()<end) requestAnimationFrame(frame);
+  })();
+}
+
+/* ---------- Música: "Cumpleaños feliz" con Web Audio (sin archivos) ---------- */
+let audioCtx=null, musicTimer=null, musicOn=false;
+const NOTES={G3:196,A3:220,B3:246.94,C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,F3:174.61};
+// melodía de cumpleaños (nota, duración en beats)
+const MELODY=[
+ ['G3',.5],['G3',.5],['A3',1],['G3',1],['C4',1],['B3',2],
+ ['G3',.5],['G3',.5],['A3',1],['G3',1],['D4',1],['C4',2],
+ ['G3',.5],['G3',.5],['G4',1],['E4',1],['C4',1],['B3',1],['A3',2],
+ ['F4',.5],['F4',.5],['E4',1],['C4',1],['D4',1],['C4',2]
+];
+function playMelody(){
+  const beat=.42; let t=audioCtx.currentTime+.1;
+  MELODY.forEach(([n,d])=>{
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='triangle'; o.frequency.value=NOTES[n];
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(.18,t+.04);
+    g.gain.exponentialRampToValueAtTime(.001,t+d*beat*.95);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(t); o.stop(t+d*beat);
+    t+=d*beat;
+  });
+  const total=(t-audioCtx.currentTime)*1000;
+  musicTimer=setTimeout(()=>{ if(musicOn) playMelody(); }, total+400);
+}
+function startMusic(){
+  if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+  musicOn=true; document.getElementById('music-btn').textContent='🎵';
+  playMelody();
+}
+function stopMusic(){ musicOn=false; clearTimeout(musicTimer); document.getElementById('music-btn').textContent='🔇'; }
+document.getElementById('music-btn').addEventListener('click',()=> musicOn?stopMusic():startMusic());
+
+/* ---------- Abrir la sorpresa ---------- */
+let abierto=false;
+function abrirSorpresa(){
+  if(abierto) return; abierto=true;
+  const gate=document.getElementById('gate');
+  gate.classList.add('hidden');
+  document.body.style.overflow='';
+  startMusic();
+  celebrar();
+  setTimeout(()=>boom({particleCount:120,spread:120}),700);
+}
+document.getElementById('openBtn').addEventListener('click',abrirSorpresa);
+
+/* evitar scroll mientras está la portada */
+document.body.style.overflow='hidden';
+
+/* ---------- Pastel: soplar las velitas ---------- */
+const DESEOS=[
+  "Tu deseo ya está volando… 🌟",
+  "Que se cumpla todo lo que pediste 💛",
+  "¡Pedido concedido! (Yogui es testigo) 🐾",
+  "Que este año sea TODO lo que mereces ✨"
+];
+let soplado=false;
+function soplar(){
+  if(soplado) return; soplado=true;
+  document.getElementById('flame').classList.add('out');
+  const w=document.getElementById('wishText');
+  w.textContent=DESEOS[Math.floor(Math.random()*DESEOS.length)];
+  w.classList.add('show');
+  boom({particleCount:140,spread:100,origin:{y:.5}});
+  document.getElementById('blowBtn').textContent='¡Pedido! 🎉';
+}
+document.getElementById('blowBtn').addEventListener('click',soplar);
+document.getElementById('cake').addEventListener('click',soplar);
+
+/* ---------- Reveal al hacer scroll ---------- */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- Decoraciones flotantes ---------- */
+const EMO=['🎈','🧡','🐾','🌼','⭐','🎈','💛'];
+function lanzarFloaty(){
+  const s=document.createElement('div');
+  s.className='floaty';
+  s.textContent=EMO[Math.floor(Math.random()*EMO.length)];
+  s.style.left=Math.random()*100+'vw';
+  const dur=7+Math.random()*6;
+  s.style.animationDuration=dur+'s';
+  s.style.fontSize=(1.2+Math.random()*1.4)+'rem';
+  document.getElementById('fiesta').appendChild(s);
+  setTimeout(()=>s.remove(),dur*1000);
+}
+setInterval(()=>{ if(abierto) lanzarFloaty(); },900);
+</script>
+</body>
+</html>
