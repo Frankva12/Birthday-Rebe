@@ -19,7 +19,7 @@ const CONFIG = {
   edad: 26,
 
   // mensaje secreto del "rasca y revela"
-  secreto: "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor."
+  secreto: "🎟️ Cupón válido para un matcha o un Kit Kat 🎁"
 };
 
 /* ===================== 2. APLICAR CONFIGURACIÓN ===================== */
@@ -113,10 +113,7 @@ document.body.style.overflow = 'hidden';  // bloquea el scroll hasta abrir
 
 /* ===================== 6. PASTEL: SOPLAR LAS VELITAS ===================== */
 const DESEOS = [
-  "Lorem ipsum dolor sit amet",
-  "Consectetur adipiscing elit",
-  "Sed do eiusmod tempor",
-  "Ut labore et dolore magna"
+  "¡Muy feliz cumpleaños, psicóloga! 🎉"
 ];
 let soplado = false;
 
