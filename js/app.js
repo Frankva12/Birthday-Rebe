@@ -19,7 +19,7 @@ const CONFIG = {
   edad: 26,
 
   // mensaje secreto del "rasca y revela"
-  secreto: "🎟️ Cupón válido para un matcha o un Kit Kat 🎁"
+  secreto: "🎟️ Vale por mil fotos de Yogui más 🐾"
 };
 
 /* ===================== 2. APLICAR CONFIGURACIÓN ===================== */
